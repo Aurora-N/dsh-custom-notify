@@ -55,6 +55,9 @@ pnpm install --dir ~/.dsh/profiles/<profile>
 
 重载插件（或重启 DSH）后，**设置 → 通知**里应该出现这一页。
 
+> 注意：本包与作者本地的 `dsh-notify` 是**两份独立实现**，路由前缀分别是
+> `/dsh-custom-notify/*` 和 `/dsh-notify/*`。同时启用会收到两套通知，请只保留一个。
+
 ## 验证
 
 设置页里点「发送测试通知」，或者在终端里：
