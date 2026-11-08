@@ -144,6 +144,48 @@ npm run check    # 语法检查（node --check）
 页面半侧必须保持为**单个经典脚本**：client 模块系统每个包只发一个 `./client`，
 `factory(require)` 只解析平台种子（如 `react`）与已注册的包 id，不支持相对导入。
 
+## 发布到 npm
+
+仓库自带两条 GitHub Actions：
+
+| 工作流 | 触发 | 做什么 |
+|---|---|---|
+| `check` | push 到 `main` / PR | 语法检查 + 包名一致性检查 |
+| `publish` | 推送 `v*` 标签 | 校验后 `npm publish` |
+
+### 一次性配置
+
+1. 在 npm 生成 **Automation** 类型的 Access Token；
+2. 仓库 Settings → Secrets and variables → Actions → 新建 `NPM_TOKEN`；
+3. 若想用 **Trusted Publishing**（免 token）：npm 包页面 → Settings → Trusted Publisher 绑定
+   仓库 `Aurora-N/dsh-custom-notify` 与工作流 `publish.yml`，然后把 `publish.yml` 里的
+   `NODE_AUTH_TOKEN` 与 `secrets` 段删掉（需要 npm CLI ≥ 11.5，CI 里加一步
+   `npm install -g npm@latest`）。
+
+### 发版流程
+
+```bash
+npm version patch -m "chore(release): v%s"   # 或 minor / major
+git push --follow-tags
+```
+
+`npm version` 会改 `package.json`、提交、打 `v1.0.1` 这样的标签；推送标签即触发
+`publish` 工作流，发布对应版本。首次发布前确认包名在 npm 上可用（`dsh-custom-notify`
+当前未被占用）。
+
+### 校验
+
+```bash
+npm run check        # 语法 + client id / patch 行名 与包名一致
+npm pack --dry-run   # 看最终会发布哪些文件
+```
+
+`prepack` 已挂上 `npm run check`，所以 `npm publish` / `npm pack` 过期或名字不一致会直接失败。
+
+> 改名（例如加作用域 `@aurora-n/dsh-custom-notify`）时，**必须同步** `client.js` 的
+> 模块 `id` 和 `cordis.patch.yml` 的行 `name`——`scripts/check-name.mjs` 会在 CI 和
+> 发布前拦住不一致的情况。
+
 ## 卸载
 
 1. 从 profile 的 `bundles` 里移除并重载（或插件管理器里卸载）；

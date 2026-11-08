@@ -36,7 +36,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "check": "node --check index.js && node --check client.js"
+    "check": "for f in index.js client.js host/*.js scripts/*.mjs; do node --check \"$f\" || exit 1; done && node scripts/check-name.mjs",
+    "prepack": "npm run check"
   },
   "dsh": {
     "bundle": {
