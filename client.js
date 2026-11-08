@@ -115,11 +115,11 @@ window.__ModuleLoader__.load({
     }
 
     function settingsUrl() {
-      return `${basePath()}dsh-notify/settings`
+      return `${basePath()}dsh-custom-notify/settings`
     }
 
     function testUrl() {
-      return `${basePath()}dsh-notify/test`
+      return `${basePath()}dsh-custom-notify/test`
     }
 
     /** Set by `apply`; the panel reads it so the labels follow the UI language. */
@@ -371,13 +371,21 @@ html[data-ds-dark-theme] .dn-toasts{
       React.useEffect(() => {
         let live = true
         fetch(settingsUrl(), { headers: { accept: 'application/json' } })
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`)
+            return response.json()
+          })
           .then((value) => {
             if (!live) return
             if (typeof value.token === 'string') tokenRef.current = value.token
             setState({ phase: 'ready', settings: value.settings || {}, pageStreams: value.pageStreams || 0 })
+            report('settings-loaded', { url: settingsUrl() })
           })
-          .catch(() => {
+          .catch((error) => {
+            report('settings-load-failed', {
+              url: settingsUrl(),
+              message: String(error && error.message ? error.message : error),
+            })
             if (live) setState((prev) => ({ ...prev, phase: 'failed' }))
           })
         return () => {
