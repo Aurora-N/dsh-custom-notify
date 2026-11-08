@@ -60,8 +60,8 @@ pnpm install --dir ~/.dsh/profiles/<profile>
 设置页里点「发送测试通知」，或者在终端里：
 
 ```bash
-TOKEN=$(curl -s http://127.0.0.1:<端口>/dsh-notify/settings | python3 -c "import sys,json;print(json.load(sys.stdin)['token'])")
-curl -H 'x-dsh-notify: 1' "http://127.0.0.1:<端口>/dsh-notify/test?token=$TOKEN"
+TOKEN=$(curl -s http://127.0.0.1:<端口>/dsh-custom-notify/settings | python3 -c "import sys,json;print(json.load(sys.stdin)['token'])")
+curl -H 'x-dsh-notify: 1' "http://127.0.0.1:<端口>/dsh-custom-notify/test?token=$TOKEN"
 ```
 
 返回 `{"ok":true,"channel":"browser"...}` 并弹出一条通知即表示链路正常。
@@ -99,7 +99,7 @@ curl -H 'x-dsh-notify: 1' "http://127.0.0.1:<端口>/dsh-notify/test?token=$TOKE
 ```
 Host 半侧                                    页面半侧
 session/event                                  EventSource
-  approval/asked    ┐                           /dsh-notify/events
+  approval/asked    ┐                           /dsh-custom-notify/events
   tool/call(提问)    ├→ 组帧 → SSE ───────────→ new Notification(...)
   turn/start/end    ┘   {kind, sessionId,          ↓ 点击
                          title, subtitle,        window.focus()

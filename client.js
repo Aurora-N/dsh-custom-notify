@@ -19,10 +19,10 @@
  *  11. notification pipeline      (SSE, permission, show, badge)
  *  12. apply()                    (mounts slots and starts the pipeline)
  *
- * The Host pushes one frame per attention moment over `/dsh-notify/events`.
+ * The Host pushes one frame per attention moment over `/dsh-custom-notify/events`.
  * Each frame becomes a notification the desktop app owns, so its click can focus
  * the window and open the Session it belongs to. Steps are reported to
- * `/dsh-notify/report`, which the Host appends to `diagnostics.log`.
+ * `/dsh-custom-notify/report`, which the Host appends to `diagnostics.log`.
  */
 report('module-eval', { href: String(window.location.pathname) })
 
@@ -653,7 +653,7 @@ html[data-ds-dark-theme] .dn-toasts{
             return
           }
           try {
-            source = new Source('/dsh-notify/events')
+            source = new Source('/dsh-custom-notify/events')
           } catch (error) {
             source = null
             report('connect-error', { message: String(error && error.message ? error.message : error) })
@@ -817,7 +817,7 @@ function report(name, detail) {
       href: String(window.location.pathname),
       at: Date.now(),
     })
-    fetch('/dsh-notify/report', {
+    fetch('/dsh-custom-notify/report', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body,

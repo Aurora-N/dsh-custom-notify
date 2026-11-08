@@ -1,11 +1,11 @@
 /**
  * The plugin's HTTP surface, deliberately outside the admitted `/api` prefix:
  *
- * - `GET  /dsh-notify/events`   SSE carrier for open pages
- * - `POST /dsh-notify/report`   page-side telemetry into diagnostics.log
- * - `GET  /dsh-notify/test`     sample frame of any kind, for verification
- * - `GET  /dsh-notify/settings` read, plus `?set=key:value` toggles
- *   `PUT  /dsh-notify/settings` the same write, for API callers
+ * - `GET  /dsh-custom-notify/events`   SSE carrier for open pages
+ * - `POST /dsh-custom-notify/report`   page-side telemetry into diagnostics.log
+ * - `GET  /dsh-custom-notify/test`     sample frame of any kind, for verification
+ * - `GET  /dsh-custom-notify/settings` read, plus `?set=key:value` toggles
+ *   `PUT  /dsh-custom-notify/settings` the same write, for API callers
  *
  * The desktop page is served from a custom `dsh-app://` scheme whose fetch drops
  * custom headers and only reliably forwards GET, so every mutation the panel
@@ -212,9 +212,9 @@ export function mountRoutes({ ctx, config, text, notifier, diag, guardToken }) {
     })
   }
 
-  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-notify/events', handler: streamHandler }))
-  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-notify/test', handler: testHandler }))
-  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-notify/report', handler: reportHandler }))
-  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-notify/settings', handler: settingsHandler }))
+  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-custom-notify/events', handler: streamHandler }))
+  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-custom-notify/test', handler: testHandler }))
+  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-custom-notify/report', handler: reportHandler }))
+  ctx.effect(() => webServer.register({ kind: 'exact', path: '/dsh-custom-notify/settings', handler: settingsHandler }))
   diag('routes registered')
 }

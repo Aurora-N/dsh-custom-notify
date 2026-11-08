@@ -3,7 +3,7 @@
  *
  * Three moments need the user while they are looking somewhere else: a tool
  * approval, a structured question, and a turn that settled (or failed). The
- * plugin opens one channel and nothing else: `GET /dsh-notify/events` reaches
+ * plugin opens one channel and nothing else: `GET /dsh-custom-notify/events` reaches
  * every open Harness page, which shows the banner itself — inside the desktop
  * app that banner is owned by DeepSeek Harness, its click focuses the window,
  * and it opens the Session the notification belongs to.
