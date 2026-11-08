@@ -1,0 +1,50 @@
+{
+  "name": "dsh-custom-notify",
+  "version": "1.0.0",
+  "description": "DeepSeek Harness 通知插件：审核、提问、完成、出错时提醒，点击通知直接跳回对应会话。",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "deepseek",
+    "notifications",
+    "plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aurora-N/dsh-custom-notify.git"
+  },
+  "homepage": "https://github.com/Aurora-N/dsh-custom-notify#readme",
+  "bugs": {
+    "url": "https://github.com/Aurora-N/dsh-custom-notify/issues"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "host/*.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node --check index.js && node --check client.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
